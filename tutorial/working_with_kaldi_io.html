@@ -1,0 +1,414 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Working with Kaldi&#39;s IO &mdash; Kaldi Pybind  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Working with Kaldi&#39;s Matrices" href="working_with_kaldi_matrices.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Kaldi Pybind
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">About Kaldi Pybind</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="working_with_kaldi_matrices.html">Working with Kaldi's Matrices</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Working with Kaldi's IO</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#reading-and-writing-alignment-information">Reading and Writing Alignment Information</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Kaldi Pybind</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Working with Kaldi's IO</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="working-with-kaldi-s-io">
+<h1>Working with Kaldi's IO<a class="headerlink" href="#working-with-kaldi-s-io" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial shows how to read and write
+ark/scp files in Python.</p>
+<div class="section" id="reading-and-writing-alignment-information">
+<h2>Reading and Writing Alignment Information<a class="headerlink" href="#reading-and-writing-alignment-information" title="Permalink to this headline">¶</a></h2>
+<p>The following class can be used to write alignment
+information to files:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">IntVectorWriter</span></code></p></li>
+</ul>
+<p>And the following classes can be used to read alignment
+information from files:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">SequentialIntVectorReader</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RandomAccessIntVectorReader</span></code></p></li>
+</ul>
+<p>The following code shows the usage of writing and reading
+alignment information.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Example of reading and writing align information</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="kn">import</span> <span class="nn">kaldi</span>
+
+<span class="n">wspecifier</span> <span class="o">=</span> <span class="s1">&#39;ark,scp:/tmp/ali.ark,/tmp/ali.scp&#39;</span>
+
+<span class="n">writer</span> <span class="o">=</span> <span class="n">kaldi</span><span class="o">.</span><span class="n">IntVectorWriter</span><span class="p">(</span><span class="n">wspecifier</span><span class="p">)</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">Write</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">Write</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">])</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span>
+
+<span class="n">rspecifier</span> <span class="o">=</span> <span class="s1">&#39;scp:/tmp/ali.scp&#39;</span>
+<span class="n">reader</span> <span class="o">=</span> <span class="n">kaldi</span><span class="o">.</span><span class="n">SequentialIntVectorReader</span><span class="p">(</span><span class="n">rspecifier</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+<span class="n">reader</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span>
+
+<span class="n">reader</span> <span class="o">=</span> <span class="n">kaldi</span><span class="o">.</span><span class="n">RandomAccessIntVectorReader</span><span class="p">(</span><span class="n">rspecifier</span><span class="p">)</span>
+<span class="n">value1</span> <span class="o">=</span> <span class="n">reader</span><span class="p">[</span><span class="s1">&#39;foo&#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">value1</span><span class="p">)</span>
+
+<span class="n">value2</span> <span class="o">=</span> <span class="n">reader</span><span class="p">[</span><span class="s1">&#39;bar&#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">value2</span><span class="p">)</span>
+<span class="n">reader</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<p>Its output is</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>foo <span class="o">[</span><span class="m">1</span>, <span class="m">2</span>, <span class="m">3</span><span class="o">]</span>
+bar <span class="o">[</span><span class="m">10</span>, <span class="m">20</span><span class="o">]</span>
+<span class="o">[</span><span class="m">1</span>, <span class="m">2</span>, <span class="m">3</span><span class="o">]</span>
+<span class="o">[</span><span class="m">10</span>, <span class="m">20</span><span class="o">]</span>
+</pre></div>
+</div>
+<p>The output of the following command</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> copy-int-vector scp:/tmp/ali.scp ark,t:-
+</pre></div>
+</div>
+<p>is</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>copy-int-vector scp:/tmp/ali.scp ark,t:-
+foo <span class="m">1</span> <span class="m">2</span> <span class="m">3</span>
+bar <span class="m">10</span> <span class="m">20</span>
+LOG <span class="o">(</span>copy-int-vector<span class="o">[</span><span class="m">5</span>.5.792~1-f5875b<span class="o">]</span>:main<span class="o">()</span>:copy-int-vector.cc:83<span class="o">)</span> Copied <span class="m">2</span> vectors of int32.
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">wspecifier</span> <span class="o">=</span> <span class="s1">&#39;ark,scp:/tmp/ali.ark,/tmp/ali.scp&#39;</span>
+</pre></div>
+</td></tr></table></div>
+<p>It creates a write specifier <code class="docutils literal notranslate"><span class="pre">wspecifier</span></code> indicating that
+the alignment information is going to be written into files
+<code class="docutils literal notranslate"><span class="pre">/tmp/ali.ark</span></code> and <code class="docutils literal notranslate"><span class="pre">/tmp/ali.scp</span></code>.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">writer</span><span class="o">.</span><span class="n">Write</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</pre></div>
+</td></tr></table></div>
+<p>It writes a list <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3]</span></code> to file with <code class="docutils literal notranslate"><span class="pre">key</span> <span class="pre">==</span> <span class="pre">foo</span></code>.
+Note that you can use keyword arguments while writing.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">writer</span><span class="o">.</span><span class="n">Write</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">])</span>
+</pre></div>
+</td></tr></table></div>
+<p>It writes a list <code class="docutils literal notranslate"><span class="pre">[10,</span> <span class="pre">20]</span></code> to file with <code class="docutils literal notranslate"><span class="pre">key</span> <span class="pre">==</span> <span class="pre">bar</span></code>.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>10</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">writer</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></div>
+<p>It closes the writer.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is a best practice to close the file when it is no longer needed.</p>
+</div>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>12
+13</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">rspecifier</span> <span class="o">=</span> <span class="s1">&#39;scp:/tmp/ali.scp&#39;</span>
+<span class="n">reader</span> <span class="o">=</span> <span class="n">kaldi</span><span class="o">.</span><span class="n">SequentialIntVectorReader</span><span class="p">(</span><span class="n">rspecifier</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>It creates a <strong>sequential</strong> reader.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>15
+16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>It uses a for loop iterate the reader.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>18</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">reader</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></div>
+<p>It closes the reader.
+It uses a for loop iterate the reader.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>20</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">reader</span> <span class="o">=</span> <span class="n">kaldi</span><span class="o">.</span><span class="n">RandomAccessIntVectorReader</span><span class="p">(</span><span class="n">rspecifier</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>It creates a random access reader.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>21
+22</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">value1</span> <span class="o">=</span> <span class="n">reader</span><span class="p">[</span><span class="s1">&#39;foo&#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">value1</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>It reads the value of <code class="docutils literal notranslate"><span class="pre">foo</span></code> and prints it out.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>24
+25</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">value2</span> <span class="o">=</span> <span class="n">reader</span><span class="p">[</span><span class="s1">&#39;bar&#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">value2</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>It reads the value of <code class="docutils literal notranslate"><span class="pre">bar</span></code> and prints it out.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>26</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">reader</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></div>
+<p>Finally, it closes the reader.</p>
+<hr class="docutils" />
+<p>The following code example achieves the same effect as the above one
+except that you do not need to close the file manually.</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Example of reading and writing align information using <code class="docutils literal notranslate"><span class="pre">with</span></code></span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="kn">import</span> <span class="nn">kaldi</span>
+
+<span class="n">wspecifier</span> <span class="o">=</span> <span class="s1">&#39;ark,scp:/tmp/ali.ark,/tmp/ali.scp&#39;</span>
+
+<span class="k">with</span> <span class="n">kaldi</span><span class="o">.</span><span class="n">IntVectorWriter</span><span class="p">(</span><span class="n">wspecifier</span><span class="p">)</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">Write</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">Write</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">])</span>
+
+<span class="c1"># Note that you do NOT need to close the file.</span>
+
+<span class="n">rspecifier</span> <span class="o">=</span> <span class="s1">&#39;scp:/tmp/ali.scp&#39;</span>
+<span class="k">with</span> <span class="n">kaldi</span><span class="o">.</span><span class="n">SequentialIntVectorReader</span><span class="p">(</span><span class="n">rspecifier</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+<span class="n">rspecifier</span> <span class="o">=</span> <span class="s1">&#39;scp:/tmp/ali.scp&#39;</span>
+<span class="k">with</span> <span class="n">kaldi</span><span class="o">.</span><span class="n">RandomAccessIntVectorReader</span><span class="p">(</span><span class="n">rspecifier</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+    <span class="n">value1</span> <span class="o">=</span> <span class="n">reader</span><span class="p">[</span><span class="s1">&#39;foo&#39;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">value1</span><span class="p">)</span>
+
+    <span class="n">value2</span> <span class="o">=</span> <span class="n">reader</span><span class="p">[</span><span class="s1">&#39;bar&#39;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">value2</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="working_with_kaldi_matrices.html" class="btn btn-neutral float-left" title="Working with Kaldi&#39;s Matrices" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019-2020, Kaldi Pybind Authors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

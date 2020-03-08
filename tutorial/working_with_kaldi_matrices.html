@@ -1,0 +1,523 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Working with Kaldi&#39;s Matrices &mdash; Kaldi Pybind  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Working with Kaldi&#39;s IO" href="working_with_kaldi_io.html" />
+    <link rel="prev" title="Getting Started" href="../getting_started.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Kaldi Pybind
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">About Kaldi Pybind</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Working with Kaldi's Matrices</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#floatvector">FloatVector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#floatsubvector">FloatSubVector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#floatmatrix">FloatMatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#floatsubmatrix">FloatSubMatrix</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="working_with_kaldi_io.html">Working with Kaldi's IO</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Kaldi Pybind</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Working with Kaldi's Matrices</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="working-with-kaldi-s-matrices">
+<h1>Working with Kaldi's Matrices<a class="headerlink" href="#working-with-kaldi-s-matrices" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial demonstrates how to use Kaldi's matrices in Python.</p>
+<p>The following table summarizes the matrix types in Kaldi that
+have been wrapped to Python.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 52%" />
+<col style="width: 48%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Kaldi Types</p></th>
+<th class="head"><p>Python Types</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Vector&lt;float&gt;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FloatVector</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SubVector&lt;float&gt;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FloatSubVector</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Matrix&lt;float&gt;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FloatMatrix</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SubMatrix&lt;float&gt;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FloatSubMatrix</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>All of the Python types above can be converted
+to Numpy arrays without copying the underlying memory
+buffers. In addition, <code class="docutils literal notranslate"><span class="pre">FloatSubVector</span></code> and <code class="docutils literal notranslate"><span class="pre">FloatSubMatrix</span></code>
+can be constructed directly from Numpy arrays without data copying.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Only the <strong>single</strong> precision floating point type has been wrapped
+to Python.</p>
+</div>
+<div class="section" id="floatvector">
+<h2>FloatVector<a class="headerlink" href="#floatvector" title="Permalink to this headline">¶</a></h2>
+<p>The following code shows how to use <code class="docutils literal notranslate"><span class="pre">FloatVector</span></code> in Python.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Example usage of <code class="docutils literal notranslate"><span class="pre">FloatVector</span></code></span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="kn">import</span> <span class="nn">kaldi</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">kaldi</span><span class="o">.</span><span class="n">FloatVector</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="n">g</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<span class="n">g</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<p>Its output is</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="o">[</span> <span class="m">10</span> <span class="m">0</span> <span class="m">0</span> <span class="o">]</span>
+
+<span class="o">[</span> <span class="m">10</span> <span class="m">20</span> <span class="m">0</span> <span class="o">]</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+</pre></div>
+</td></tr></table></div>
+<p>This is a hint that it needs <code class="docutils literal notranslate"><span class="pre">python3</span></code>. At present, we support
+only <code class="docutils literal notranslate"><span class="pre">python3</span></code> in Kaldi Pybind.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">kaldi</span>
+</pre></div>
+</td></tr></table></div>
+<p>This imports the Kaldi Pbyind package. If you encounter an import error, please
+make sure that <code class="docutils literal notranslate"><span class="pre">PYTHONPATH</span></code> has been set to point to <code class="docutils literal notranslate"><span class="pre">KALDI_ROOT/src/pybind</span></code>.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">kaldi</span><span class="o">.</span><span class="n">FloatVector</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>This creates an object of <code class="docutils literal notranslate"><span class="pre">FloatVector</span></code> containing 3 elements
+which are by default initialized to zero.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>This prints the value of the <code class="docutils literal notranslate"><span class="pre">FloatVector</span></code> object to the console.
+Note that you use operator <code class="docutils literal notranslate"><span class="pre">()</span></code> in C++ to access the elements of
+a <code class="docutils literal notranslate"><span class="pre">Vector&lt;float&gt;</span></code> object; Python code uses <code class="docutils literal notranslate"><span class="pre">[]</span></code>.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></div>
+<p>This creates a Numpy array object <code class="docutils literal notranslate"><span class="pre">g</span></code> from <code class="docutils literal notranslate"><span class="pre">f</span></code>. No memory is copied here.
+<code class="docutils literal notranslate"><span class="pre">g</span></code> shares the underlying memory with <code class="docutils literal notranslate"><span class="pre">f</span></code>.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>10</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">g</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span>
+</pre></div>
+</td></tr></table></div>
+<p>This also changes <code class="docutils literal notranslate"><span class="pre">f</span></code> since it shares the same memory with <code class="docutils literal notranslate"><span class="pre">g</span></code>.
+You can verify that <code class="docutils literal notranslate"><span class="pre">f</span></code> is changed from the output.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>We recommend that you invoke the <code class="docutils literal notranslate"><span class="pre">numpy()</span></code> method of a <code class="docutils literal notranslate"><span class="pre">FloatVector</span></code>
+object to get a Numpy ndarray object and to manipulate this Numpy object.
+Since it shares the underlying memory with the <code class="docutils literal notranslate"><span class="pre">FloatVector</span></code> object,
+every operation you perform to this Numpy ndarray object is visible to
+the <code class="docutils literal notranslate"><span class="pre">FloatVector</span></code> object.</p>
+</div>
+</div>
+<div class="section" id="floatsubvector">
+<h2>FloatSubVector<a class="headerlink" href="#floatsubvector" title="Permalink to this headline">¶</a></h2>
+<p>The following code shows how to use <code class="docutils literal notranslate"><span class="pre">FloatSubVector</span></code> in Python.</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Example usage of <code class="docutils literal notranslate"><span class="pre">FloatSubVector</span></code></span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="kn">import</span> <span class="nn">kaldi</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">kaldi</span><span class="o">.</span><span class="n">FloatSubVector</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+<span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+<span class="n">g</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<span class="n">g</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<p>Its output is</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="o">[</span> <span class="m">0</span>. <span class="m">20</span>. <span class="m">30</span>.<span class="o">]</span>
+<span class="o">[</span>  <span class="m">0</span>. <span class="m">100</span>.  <span class="m">30</span>. <span class="o">]</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>6
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">kaldi</span><span class="o">.</span><span class="n">FloatSubVector</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>This creates a <code class="docutils literal notranslate"><span class="pre">FloatSubVector</span></code> object <code class="docutils literal notranslate"><span class="pre">f</span></code> from a Numpy ndarray object <code class="docutils literal notranslate"><span class="pre">v</span></code>.
+No memory is copied here. <code class="docutils literal notranslate"><span class="pre">f</span></code> shares the underlying memory with <code class="docutils literal notranslate"><span class="pre">v</span></code>.
+Note that the <code class="docutils literal notranslate"><span class="pre">dtype</span></code> of <code class="docutils literal notranslate"><span class="pre">v</span></code> has to be <code class="docutils literal notranslate"><span class="pre">np.float32</span></code>; otherwise, you will
+get a runtime error when creating <code class="docutils literal notranslate"><span class="pre">f</span></code>.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</td></tr></table></div>
+<p>This uses <code class="docutils literal notranslate"><span class="pre">[]</span></code> to access the elements of <code class="docutils literal notranslate"><span class="pre">f</span></code>. It also changes <code class="docutils literal notranslate"><span class="pre">v</span></code>
+since <code class="docutils literal notranslate"><span class="pre">f</span></code> shares the same memory with <code class="docutils literal notranslate"><span class="pre">v</span></code>.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>12</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></div>
+<p>This create a Numpy ndarray object <code class="docutils literal notranslate"><span class="pre">g</span></code> from <code class="docutils literal notranslate"><span class="pre">f</span></code>. No memory is copied here.
+<code class="docutils literal notranslate"><span class="pre">g</span></code> shares the same memory with <code class="docutils literal notranslate"><span class="pre">f</span></code>.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>13</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">g</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
+</pre></div>
+</td></tr></table></div>
+<p>This also changes <code class="docutils literal notranslate"><span class="pre">v</span></code> because of memory sharing.</p>
+</div>
+<div class="section" id="floatmatrix">
+<h2>FloatMatrix<a class="headerlink" href="#floatmatrix" title="Permalink to this headline">¶</a></h2>
+<p>The following code shows how to use <code class="docutils literal notranslate"><span class="pre">FloatMatrix</span></code> in Python.</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Example usage of <code class="docutils literal notranslate"><span class="pre">FloatMatrix</span></code></span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="kn">import</span> <span class="nn">kaldi</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">kaldi</span><span class="o">.</span><span class="n">FloatMatrix</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="n">g</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<p>Its output is</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>
+ <span class="m">0</span> <span class="m">0</span> <span class="m">0</span>
+ <span class="m">0</span> <span class="m">0</span> <span class="m">100</span> <span class="o">]</span>
+
+<span class="o">[</span>
+ <span class="m">200</span> <span class="m">0</span> <span class="m">0</span>
+ <span class="m">0</span> <span class="m">0</span> <span class="m">100</span> <span class="o">]</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">kaldi</span><span class="o">.</span><span class="n">FloatMatrix</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>This creates an object <code class="docutils literal notranslate"><span class="pre">f</span></code> of <code class="docutils literal notranslate"><span class="pre">FloatMatrix</span></code> with
+2 rows and 3 columns.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>6</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
+</pre></div>
+</td></tr></table></div>
+<p>This uses <code class="docutils literal notranslate"><span class="pre">[]</span></code> to access the elements of <code class="docutils literal notranslate"><span class="pre">f</span></code>.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>This prints the value of <code class="docutils literal notranslate"><span class="pre">f</span></code> to the console.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></div>
+<p>This creates a Numpy ndarray object <code class="docutils literal notranslate"><span class="pre">g</span></code> from <code class="docutils literal notranslate"><span class="pre">f</span></code>.
+No memory is copied here. <code class="docutils literal notranslate"><span class="pre">g</span></code> shares the underlying memory
+with <code class="docutils literal notranslate"><span class="pre">f</span></code>.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>10</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">200</span>
+</pre></div>
+</td></tr></table></div>
+<p>This also changes <code class="docutils literal notranslate"><span class="pre">f</span></code> due to memory sharing.</p>
+</div>
+<div class="section" id="floatsubmatrix">
+<h2>FloatSubMatrix<a class="headerlink" href="#floatsubmatrix" title="Permalink to this headline">¶</a></h2>
+<p>The following code shows how to use <code class="docutils literal notranslate"><span class="pre">FloatSubMatrix</span></code> in Python.</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Example usage of <code class="docutils literal notranslate"><span class="pre">FloatSubMatrix</span></code></span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="kn">import</span> <span class="nn">kaldi</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">kaldi</span><span class="o">.</span><span class="n">FloatSubMatrix</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+
+<span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="n">g</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<p>Its output is</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="o">[[</span>  <span class="m">1</span>.   <span class="m">2</span>.   <span class="m">3</span>.<span class="o">]</span>
+ <span class="o">[</span> <span class="m">10</span>.  <span class="m">20</span>. <span class="m">100</span>.<span class="o">]]</span>
+
+<span class="o">[[</span><span class="m">200</span>.   <span class="m">2</span>.   <span class="m">3</span>.<span class="o">]</span>
+ <span class="o">[</span> <span class="m">10</span>.  <span class="m">20</span>. <span class="m">100</span>.<span class="o">]]</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>6
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">kaldi</span><span class="o">.</span><span class="n">FloatSubMatrix</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>This creates an object <code class="docutils literal notranslate"><span class="pre">f</span></code> of <code class="docutils literal notranslate"><span class="pre">FloatSubMatrix</span></code> from
+a Numpy ndarray object <code class="docutils literal notranslate"><span class="pre">m</span></code>. <code class="docutils literal notranslate"><span class="pre">f</span></code> shares the underlying
+memory with <code class="docutils literal notranslate"><span class="pre">m</span></code>. Note that the <code class="docutils literal notranslate"><span class="pre">dtype</span></code> of <code class="docutils literal notranslate"><span class="pre">m</span></code> has
+to be <code class="docutils literal notranslate"><span class="pre">np.float32</span></code>. Otherwise you will get a runtime error.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 9
+10</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>This uses <code class="docutils literal notranslate"><span class="pre">[]</span></code> to access the elements of <code class="docutils literal notranslate"><span class="pre">f</span></code>. Note that
+<code class="docutils literal notranslate"><span class="pre">m</span></code> is also changed due to memory sharing.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>13</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></div>
+<p>This creates a Numpy ndarray object from <code class="docutils literal notranslate"><span class="pre">f</span></code>. No memory
+is copied here. <code class="docutils literal notranslate"><span class="pre">g</span></code> shares the underlying memory with <code class="docutils literal notranslate"><span class="pre">f</span></code>.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>14</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">200</span>
+</pre></div>
+</td></tr></table></div>
+<p>This changes <code class="docutils literal notranslate"><span class="pre">f</span></code> and <code class="docutils literal notranslate"><span class="pre">m</span></code>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="working_with_kaldi_io.html" class="btn btn-neutral float-right" title="Working with Kaldi&#39;s IO" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../getting_started.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019-2020, Kaldi Pybind Authors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

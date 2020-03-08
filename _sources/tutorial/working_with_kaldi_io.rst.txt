@@ -1,0 +1,161 @@
+
+Working with Kaldi's IO
+=======================
+
+This tutorial shows how to read and write
+ark/scp files in Python.
+
+
+Reading and Writing Alignment Information
+-----------------------------------------
+
+The following class can be used to write alignment
+information to files:
+
+- ``IntVectorWriter``
+
+And the following classes can be used to read alignment
+information from files:
+
+- ``SequentialIntVectorReader``
+- ``RandomAccessIntVectorReader``
+
+The following code shows the usage of writing and reading
+alignment information.
+
+
+.. literalinclude:: ./code/test_io_ali.py
+   :caption: Example of reading and writing align information
+   :language: python
+   :linenos:
+
+Its output is
+
+.. code-block:: sh
+
+    foo [1, 2, 3]
+    bar [10, 20]
+    [1, 2, 3]
+    [10, 20]
+
+The output of the following command
+
+.. code:: console
+
+  $ copy-int-vector scp:/tmp/ali.scp ark,t:-
+
+is
+
+.. code-block:: sh
+
+    copy-int-vector scp:/tmp/ali.scp ark,t:-
+    foo 1 2 3
+    bar 10 20
+    LOG (copy-int-vector[5.5.792~1-f5875b]:main():copy-int-vector.cc:83) Copied 2 vectors of int32.
+
+.. literalinclude:: ./code/test_io_ali.py
+   :language: python
+   :lineno-start: 5
+   :lines: 5
+   :linenos:
+
+It creates a write specifier ``wspecifier`` indicating that
+the alignment information is going to be written into files
+``/tmp/ali.ark`` and ``/tmp/ali.scp``.
+
+.. literalinclude:: ./code/test_io_ali.py
+   :language: python
+   :lineno-start: 8
+   :lines: 8
+   :linenos:
+
+It writes a list ``[1, 2, 3]`` to file with ``key == foo``.
+Note that you can use keyword arguments while writing.
+
+.. literalinclude:: ./code/test_io_ali.py
+   :language: python
+   :lineno-start: 9
+   :lines: 9
+   :linenos:
+
+It writes a list ``[10, 20]`` to file with ``key == bar``.
+
+.. literalinclude:: ./code/test_io_ali.py
+   :language: python
+   :lineno-start: 10
+   :lines: 10
+   :linenos:
+
+It closes the writer.
+
+.. Note::
+
+  It is a best practice to close the file when it is no longer needed.
+
+.. literalinclude:: ./code/test_io_ali.py
+   :language: python
+   :lineno-start: 12
+   :lines: 12-13
+   :linenos:
+
+It creates a **sequential** reader.
+
+.. literalinclude:: ./code/test_io_ali.py
+   :language: python
+   :lineno-start: 15
+   :lines: 15-16
+   :linenos:
+
+It uses a for loop iterate the reader.
+
+.. literalinclude:: ./code/test_io_ali.py
+   :language: python
+   :lineno-start: 18
+   :lines: 18
+   :linenos:
+
+It closes the reader.
+It uses a for loop iterate the reader.
+
+.. literalinclude:: ./code/test_io_ali.py
+   :language: python
+   :lineno-start: 20
+   :lines: 20
+   :linenos:
+
+It creates a random access reader.
+
+.. literalinclude:: ./code/test_io_ali.py
+   :language: python
+   :lineno-start: 21
+   :lines: 21-22
+   :linenos:
+
+It reads the value of ``foo`` and prints it out.
+
+.. literalinclude:: ./code/test_io_ali.py
+   :language: python
+   :lineno-start: 24
+   :lines: 24-25
+   :linenos:
+
+It reads the value of ``bar`` and prints it out.
+
+.. literalinclude:: ./code/test_io_ali.py
+   :language: python
+   :lineno-start: 26
+   :lines: 26
+   :linenos:
+
+Finally, it closes the reader.
+
+
+------
+
+The following code example achieves the same effect as the above one
+except that you do not need to close the file manually.
+
+.. literalinclude:: ./code/test_io_ali_2.py
+   :caption: Example of reading and writing align information using ``with``
+   :language: python
+   :linenos:
